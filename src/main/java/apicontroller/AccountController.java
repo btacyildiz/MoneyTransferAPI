@@ -12,7 +12,7 @@ public class AccountController {
     public static Handler createAccount =  ctx ->{
         Account newAccount;
         try {
-            newAccount = ctx.bodyAsClass(Account.class);
+            newAccount = ctx.   bodyAsClass(Account.class);
         }catch (Exception e){
             e.printStackTrace();
             ctx.result(ApiResult.INVALID_REQUEST.toJSON());
@@ -37,6 +37,24 @@ public class AccountController {
         }
     };
 
+    public static Handler deleteAccount = ctx -> {
+        String accountID = ctx.pathParam("id");
+        boolean res = AccountDAO.getInstance().removeAccount(accountID);
+        if(!res){
+            ctx.status(HTTPCodes.NOT_FOUND.getCode());
+            return;
+        }
+        ctx.status(HTTPCodes.NO_CONTENT.getCode());
+    };
 
-
+    public static Handler getAccount = ctx -> {
+        String accountID = ctx.pathParam("id");
+        Account retrievedAccount = AccountDAO.getInstance().getAccount(accountID);
+        if(retrievedAccount == null){
+            ctx.status(HTTPCodes.NOT_FOUND.getCode());
+            return;
+        }
+        ctx.result(retrievedAccount.toJSON());
+        ctx.status(HTTPCodes.SUCCESS.getCode());
+    };
 }

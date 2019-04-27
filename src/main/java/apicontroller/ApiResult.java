@@ -10,7 +10,8 @@ public enum ApiResult {
     NEGATIVE_BALANCE(2002, "Balance cannot be negative"),
     ACCOUNT_NOT_FOUND(2003, "Account is not founded"),
     ACCOUNT_ALREADY_EXIST(2004, "Account is already exists"),
-    INSUFFICIENT_BALANCE(2005, "Insufficient balance"),
+    INSUFFICIENT_FUNDS(2005, "Insufficient balance"),
+    CURRENCY_DOES_NOT_MATCH(2006, "Currencies does not match"),
     SYSTEM_ERROR(2099, "System error");
 
     private int status;

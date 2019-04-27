@@ -1,16 +1,23 @@
 package model;
 
-public class Account {
+import com.fasterxml.jackson.databind.ObjectMapper;
+import utility.JsonUtil;
+
+public class Account extends JsonUtil {
     private String accountID;
     private double balance;
 
-    private AccountType accountType;
+    private Currency currency;
 
     public Account(){}
-    public Account(String accountID, AccountType type, double balance){
+    public Account(String accountID, Currency type, double balance){
         this.accountID = accountID;
         this.balance = balance;
-        this.accountType = type;
+        this.currency = type;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
     }
 
     public double getBalance() {
@@ -21,7 +28,17 @@ public class Account {
         return accountID;
     }
 
-    public AccountType getAccountType() {
-        return accountType;
+    public Currency getCurrency() {
+        return currency;
     }
+
+    public String toJSON(){
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.writeValueAsString(this);
+        }catch (Exception e){
+            return "";
+        }
+    }
+
 }

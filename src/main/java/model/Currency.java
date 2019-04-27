@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 
-public enum AccountType {
+public enum Currency {
         TRY(1001),
         GBP(1002),
         EUR(1003),
@@ -13,8 +13,8 @@ public enum AccountType {
         private int type;
 
     @JsonCreator
-    public static AccountType getNameByValue(final int value) {
-        for (final AccountType s: AccountType.values()) {
+    public static Currency getNameByValue(final int value) {
+        for (final Currency s: Currency.values()) {
             if (s.getType()== value) {
                 return s;
             }
@@ -22,7 +22,7 @@ public enum AccountType {
         return null;
     }
 
-    AccountType(int type){
+    Currency(int type){
             this.type = type;
         }
 
