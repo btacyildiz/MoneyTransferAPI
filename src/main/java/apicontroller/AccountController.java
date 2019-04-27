@@ -1,0 +1,42 @@
+package apicontroller;
+
+import data.AccountDAO;
+import io.javalin.Handler;
+import model.Account;
+
+public class AccountController {
+
+    /**
+     * Creates account if not exists
+     */
+    public static Handler createAccount =  ctx ->{
+        Account newAccount;
+        try {
+            newAccount = ctx.bodyAsClass(Account.class);
+        }catch (Exception e){
+            e.printStackTrace();
+            ctx.result(ApiResult.INVALID_REQUEST.toJSON());
+            ctx.status(HTTPCodes.BAD_REQUEST.getCode());
+            return;
+        }
+
+        // check for negative balance
+        if(newAccount.getBalance() < 0){
+            ctx.result(ApiResult.NEGATIVE_BALANCE.toJSON());
+            ctx.status(HTTPCodes.BAD_REQUEST.getCode());
+            return;
+        }
+
+        boolean result = AccountDAO.getInstance().addAccount(newAccount);
+        if(!result){
+            ctx.result(ApiResult.ACCOUNT_ALREADY_EXIST.toJSON());
+            ctx.status(HTTPCodes.BAD_REQUEST.getCode());
+        }else{
+            ctx.result(ApiResult.SUCCESS.toJSON());
+            ctx.status(HTTPCodes.CREATED.getCode());
+        }
+    };
+
+
+
+}
