@@ -12,7 +12,7 @@ public class AccountController {
     public static Handler createAccount =  ctx ->{
         Account newAccount;
         try {
-            newAccount = ctx.   bodyAsClass(Account.class);
+            newAccount = ctx.bodyAsClass(Account.class);
         }catch (Exception e){
             e.printStackTrace();
             ctx.result(ApiResult.INVALID_REQUEST.toJSON());
