@@ -41,8 +41,8 @@ public class TransferController {
             return;
         }
 
-        // check if transfer amount id 0
-        if(newTransfer.getAmount() > 0){
+        // check if transfer amount is greater than 0
+        if(newTransfer.getAmount() <= 0){
             ctx.status(HTTPCodes.FORBIDDEN.getCode());
             ctx.result(ApiResult.ZERO_AMOUNT.toJSON());
             return;

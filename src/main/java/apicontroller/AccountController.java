@@ -10,6 +10,8 @@ public class AccountController {
      * Creates account if not exists
      */
     public static Handler createAccount =  ctx ->{
+
+        // TODO check what if one of the elements of JSON is not provided
         Account newAccount;
         try {
             newAccount = ctx.bodyAsClass(Account.class);
@@ -26,6 +28,8 @@ public class AccountController {
             ctx.status(HTTPCodes.BAD_REQUEST.getCode());
             return;
         }
+
+        // TODO check currency type and allow only for permitted ones
 
         boolean result = AccountDAO.getInstance().addAccount(newAccount);
         if(!result){
