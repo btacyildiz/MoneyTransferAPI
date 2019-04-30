@@ -21,7 +21,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"accountID\": \"12345\",\n\t\"balance\": 100,\n\t\"accountType\" : 1001\n}"
+					"raw": "{\n\t\"accountID\": \"1234\",\n\t\"balance\": 100,\n\t\"currency\" : 1001\n}"
 				},
 				"description": ""
 			},
@@ -44,7 +44,7 @@
 		{
 			"name": "GetAccount",
 			"request": {
-				"url": "http://localhost:7000/account/12345",
+				"url": "http://localhost:7000/account/1234",
 				"method": "GET",
 				"header": [],
 				"body": {
