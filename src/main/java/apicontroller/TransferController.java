@@ -41,6 +41,13 @@ public class TransferController {
             return;
         }
 
+        // check if transfer amount id 0
+        if(newTransfer.getAmount() > 0){
+            ctx.status(HTTPCodes.FORBIDDEN.getCode());
+            ctx.result(ApiResult.ZERO_AMOUNT.toJSON());
+            return;
+        }
+
         // check if source account has enough balance
         if(sourceAccount.getBalance() < newTransfer.getAmount()){
             ctx.status(HTTPCodes.FORBIDDEN.getCode());

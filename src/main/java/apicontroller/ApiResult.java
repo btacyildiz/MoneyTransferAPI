@@ -12,6 +12,8 @@ public enum ApiResult {
     ACCOUNT_ALREADY_EXIST(2004, "Account is already exists"),
     INSUFFICIENT_FUNDS(2005, "Insufficient balance"),
     CURRENCY_DOES_NOT_MATCH(2006, "Currencies does not match"),
+    ZERO_AMOUNT(2007, "Zero amount transfer is permitted"),
+
     SYSTEM_ERROR(2099, "System error");
 
     private int status;
