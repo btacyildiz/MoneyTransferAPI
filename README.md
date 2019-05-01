@@ -11,7 +11,7 @@ After the project has been cloned, in the project directory <br/>
 
 ### Prerequisites
 
-Java 8 <br/>
+java version 11.0.3 <br/>
 MAVEN <br/>
 This project uses port "7000" as default <br/>
 please make sure that this port is not already in use.

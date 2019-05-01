@@ -18,9 +18,6 @@ public class TransferController {
             return;
         }
 
-        // TODO amount value floating digits should not be more than 2
-
-
         final double TRANSFER_AMOUNT = newTransfer.getAmount();
         // check if transfer amount is greater than 0
         if(TRANSFER_AMOUNT <= 0 || AmountUtil.getFloatDigitCount(TRANSFER_AMOUNT) > 2){
