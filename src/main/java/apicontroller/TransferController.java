@@ -74,7 +74,7 @@ public class TransferController {
     };
 
     public static synchronized void transferBalance(Account source, Account destination, double amount){
-        source.widthdraw(amount);
+        source.withdraw(amount);
         destination.deposit(amount);
     }
 }

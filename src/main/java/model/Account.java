@@ -1,7 +1,6 @@
 package model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import utility.JsonUtil;
@@ -25,7 +24,7 @@ public class Account extends JsonUtil {
         this.balance = balance;
     }
 
-    public synchronized void widthdraw(double amount){
+    public synchronized void withdraw(double amount){
         this.balance -= amount;
     }
 

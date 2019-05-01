@@ -32,7 +32,7 @@ public class  AccountDAOTest{
                     i= TRY_COUNT;
                     while(--i>0){
                         Account b = AccountDAO.getInstance().getAccount(a.getAccountID());
-                        b.widthdraw(1.0);
+                        b.withdraw(1.0);
                     }
                 }
             }));
