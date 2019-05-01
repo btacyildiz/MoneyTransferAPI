@@ -13,6 +13,8 @@ public enum ApiResult {
     INSUFFICIENT_FUNDS(2005, "Insufficient balance"),
     CURRENCY_DOES_NOT_MATCH(2006, "Currencies does not match"),
     ZERO_AMOUNT(2007, "Zero amount transfer is permitted"),
+    TRANSFER_EQUAL_ACCOUNTIDS(2008, "Account ids are same"),
+    INVALID_CURRENCY(2009, "Invalid currency type"),
 
     SYSTEM_ERROR(2099, "System error");
 

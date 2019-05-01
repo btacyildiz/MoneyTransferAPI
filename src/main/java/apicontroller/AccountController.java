@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import data.AccountDAO;
 import io.javalin.Handler;
 import model.Account;
+import model.Currency;
 
 public class AccountController {
 
@@ -12,12 +13,9 @@ public class AccountController {
      */
     public static Handler createAccount =  ctx ->{
 
-        // TODO check what if one of the elements of JSON is not provided
+        // TODO check for value types
         Account newAccount;
         try {
-            ObjectMapper mapper = new ObjectMapper();
-            Account anotherAccount = mapper.readValue(ctx.body(), Account.class);
-
             newAccount = ctx.bodyAsClass(Account.class);
         }catch (Exception e){
             e.printStackTrace();
@@ -33,7 +31,12 @@ public class AccountController {
             return;
         }
 
-        // TODO check currency type and allow only for permitted ones
+        // check currency type
+        if(newAccount.getCurrency() == null){
+            ctx.result(ApiResult.INVALID_CURRENCY.toJSON());
+            ctx.status(HTTPCodes.BAD_REQUEST.getCode());
+            return;
+        }
 
         boolean result = AccountDAO.getInstance().addAccount(newAccount);
         if(!result){

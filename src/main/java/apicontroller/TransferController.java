@@ -23,7 +23,6 @@ public class TransferController {
             ctx.status(HTTPCodes.BAD_REQUEST.getCode());
             return;
         }
-        // TODO check if accounts are different
 
         // check if accounts are exists
         Account sourceAccount = AccountDAO.getInstance().getAccount(newTransfer.getSourceAccountID());
@@ -31,6 +30,12 @@ public class TransferController {
         if(sourceAccount == null || destinationAccount == null){
             ctx.status(HTTPCodes.BAD_REQUEST.getCode());
             ctx.result(ApiResult.ACCOUNT_NOT_FOUND.toJSON());
+            return;
+        }
+
+        if(sourceAccount.getAccountID().equals(destinationAccount.getAccountID())){
+            ctx.status(HTTPCodes.BAD_REQUEST.getCode());
+            ctx.result(ApiResult.TRANSFER_EQUAL_ACCOUNTIDS.toJSON());
             return;
         }
 
