@@ -1,10 +1,8 @@
 package apicontroller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import data.AccountDAO;
 import io.javalin.Handler;
 import model.Account;
-import model.Currency;
 
 public class AccountController {
 
@@ -18,7 +16,7 @@ public class AccountController {
         try {
             newAccount = ctx.bodyAsClass(Account.class);
         }catch (Exception e){
-            e.printStackTrace();
+            System.out.println("Create Account invalid request data request: " + ctx.body());
             ctx.result(ApiResult.INVALID_REQUEST.toJSON());
             ctx.status(HTTPCodes.BAD_REQUEST.getCode());
             return;

@@ -9,6 +9,7 @@ import org.testng.annotations.Test;
 import java.util.ArrayList;
 
 public class  AccountDAOTest{
+    /*
     @Test
     public void concurrencyTest(){
 
@@ -47,5 +48,5 @@ public class  AccountDAOTest{
 
         Assert.assertEquals(0.0, AccountDAO.getInstance().getAccount(a.getAccountID()).getBalance());
 
-    }
+    }*/
 }
