@@ -25,6 +25,14 @@ public class Account extends JsonUtil {
         this.balance = balance;
     }
 
+    public synchronized void widthdraw(double amount){
+        this.balance -= amount;
+    }
+
+    public synchronized void deposit(double amount){
+        this.balance += amount;
+    }
+
     public double getBalance() {
         return balance;
     }

@@ -3,6 +3,7 @@ package apicontroller;
 import data.AccountDAO;
 import io.javalin.Handler;
 import model.Account;
+import utility.AmountUtil;
 
 public class AccountController {
 
@@ -20,10 +21,11 @@ public class AccountController {
             ctx.status(HTTPCodes.BAD_REQUEST.getCode());
             return;
         }
+        final double NEW_ACCOUNT_BALANCE = newAccount.getBalance();
 
-        // check for negative balance
-        if(newAccount.getBalance() < 0){
-            ctx.result(ApiResult.NEGATIVE_BALANCE.toJSON());
+        // check balance correctness
+        if(NEW_ACCOUNT_BALANCE < 0 || AmountUtil.getFloatDigitCount(NEW_ACCOUNT_BALANCE) > 2){
+            ctx.result(ApiResult.INVALID_BALANCE.toJSON());
             ctx.status(HTTPCodes.BAD_REQUEST.getCode());
             return;
         }

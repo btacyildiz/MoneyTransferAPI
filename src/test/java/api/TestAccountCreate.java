@@ -27,6 +27,21 @@ public class TestAccountCreate extends ApiTestSuite{
     }
 
     @Test
+    public void testAccountIsCreated_InvalidBalance() throws UnirestException{
+        String testJson = "{\n" +
+                "\"accountID\" : 5,\n" +
+                "\"currency\": 1001,\n" +
+                "\"balance\" : 200.777\n" +
+                "}";
+        HttpResponse<JsonNode> jsonResponse = Unirest.post( TestConstants.BASE_URL+ "/account")
+                .header("accept", "application/json")
+                .body(testJson)
+                .asJson();
+        Assert.assertEquals(jsonResponse.getStatus(), HTTPCodes.BAD_REQUEST.getCode());
+    }
+
+
+    @Test
     public void testAccountIsCreated_NegativeBalance() throws UnirestException{
         String testJson = "{\n" +
                 "\"accountID\" : 5,\n" +

@@ -32,6 +32,28 @@ public class TestTransfer extends ApiTestSuite {
     }
 
     @Test
+    public void transfer_InvalidAmount() throws UnirestException {
+        Assert.assertEquals(createAccount(TestConstants.ACCOUNT_ID_FOR_TRANFER_SOURCE).getStatus(), HTTPCodes.CREATED.getCode());
+        Assert.assertEquals(createAccount(TestConstants.ACCOUNT_ID_FOR_TRANFER_DESTINATION).getStatus(), HTTPCodes.CREATED.getCode());
+
+        String transferCreateJson= "{\n" +
+                "\t\"sourceAccountID\" : \""+TestConstants.ACCOUNT_ID_FOR_TRANFER_SOURCE+"\",\n" +
+                "\t\"destinationAccountID\" : \""+TestConstants.ACCOUNT_ID_FOR_TRANFER_DESTINATION+"\",\n" +
+                "\t\"amount\" : \"2.666\",\n" +
+                "\t\"currency\" : 1001\n" +
+                "}";
+
+        HttpResponse<JsonNode> jsonResponse = Unirest.post( TestConstants.BASE_URL+ TestConstants.TRANSFER_PATH)
+                .header("accept", "application/json")
+                .body(transferCreateJson)
+                .asJson();
+        Assert.assertEquals(jsonResponse.getStatus(), HTTPCodes.BAD_REQUEST.getCode());
+
+        Assert.assertEquals(deleteAccount(TestConstants.ACCOUNT_ID_FOR_TRANFER_SOURCE).getStatus(), HTTPCodes.NO_CONTENT.getCode());
+        Assert.assertEquals(deleteAccount(TestConstants.ACCOUNT_ID_FOR_TRANFER_DESTINATION).getStatus(), HTTPCodes.NO_CONTENT.getCode());
+    }
+
+    @Test
     public void transfer_NotEnoughFunds() throws UnirestException {
         Assert.assertEquals(createAccount(TestConstants.ACCOUNT_ID_FOR_TRANFER_SOURCE).getStatus(), HTTPCodes.CREATED.getCode());
         Assert.assertEquals(createAccount(TestConstants.ACCOUNT_ID_FOR_TRANFER_DESTINATION).getStatus(), HTTPCodes.CREATED.getCode());

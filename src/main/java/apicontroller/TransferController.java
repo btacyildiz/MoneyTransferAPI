@@ -4,6 +4,7 @@ import io.javalin.Handler;
 import model.Account;
 import model.Currency;
 import model.Transfer;
+import utility.AmountUtil;
 
 public class TransferController {
     public static Handler createTransfer = ctx->{
@@ -19,8 +20,10 @@ public class TransferController {
 
         // TODO amount value floating digits should not be more than 2
 
+
+        final double TRANSFER_AMOUNT = newTransfer.getAmount();
         // check if transfer amount is greater than 0
-        if(newTransfer.getAmount() <= 0){
+        if(TRANSFER_AMOUNT <= 0 || AmountUtil.getFloatDigitCount(TRANSFER_AMOUNT) > 2){
             ctx.status(HTTPCodes.BAD_REQUEST.getCode());
             ctx.result(ApiResult.INVALID_AMOUNT.toJSON());
             return;
@@ -58,25 +61,20 @@ public class TransferController {
         }
 
         // check if source account has enough balance
-        if(sourceAccount.getBalance() < newTransfer.getAmount()){
+        if(sourceAccount.getBalance() < TRANSFER_AMOUNT){
             ctx.status(HTTPCodes.FORBIDDEN.getCode());
             ctx.result(ApiResult.INSUFFICIENT_FUNDS.toJSON());
             return;
         }
-        
-        // TODO check for concurrency
-        // do the transfer
-        double transferAmount = newTransfer.getAmount();
 
-        // TODO try to make following two op atomic
-        sourceAccount.setBalance(sourceAccount.getBalance() - transferAmount);
-        destinationAccount.setBalance(destinationAccount.getBalance() + transferAmount);
-
-        // persist to the data access object
-        AccountDAO.getInstance().updateAccount(sourceAccount);
-        AccountDAO.getInstance().updateAccount(destinationAccount);
+        transferBalance(sourceAccount,destinationAccount,TRANSFER_AMOUNT);
 
         ctx.status(HTTPCodes.SUCCESS.getCode());
         ctx.result(ApiResult.SUCCESS.toJSON());
     };
+
+    public static synchronized void transferBalance(Account source, Account destination, double amount){
+        source.widthdraw(amount);
+        destination.deposit(amount);
+    }
 }
