@@ -6,19 +6,26 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 
 public class ApiTestSuite {
-    static Javalin app;
+    private static Javalin app;
     @BeforeClass
-    public static void started() {
+    public synchronized static void started ()
+    {
         app = ApiTestSuite.serverStarter();
     }
+
     @AfterClass
-    public static void completed() {
-        app.stop();
+    public synchronized static void completed(){
     }
 
-    public static Javalin serverStarter(){
-        Javalin app = Javalin.create().start(7000);
-        new Router(app);
+    private static Javalin serverStarter(){
+        try {
+            Javalin app = Javalin.create();
+            app.disableStartupBanner();
+            app.start(7000);
+            new Router(app);
+        }catch(Exception e){
+            System.out.println("Already started");
+        }
         return app;
     }
 }

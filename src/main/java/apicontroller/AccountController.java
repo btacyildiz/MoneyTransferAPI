@@ -11,12 +11,11 @@ public class AccountController {
      */
     public static Handler createAccount =  ctx ->{
 
-        // TODO check for value types
         Account newAccount;
         try {
             newAccount = ctx.bodyAsClass(Account.class);
         }catch (Exception e){
-            System.out.println("Create Account invalid request data request: " + ctx.body());
+            System.out.println("Create Account Error --> invalid payload " + ctx.body());
             ctx.result(ApiResult.INVALID_REQUEST.toJSON());
             ctx.status(HTTPCodes.BAD_REQUEST.getCode());
             return;
