@@ -5,29 +5,29 @@ This rest api consist of account management and transaction operations.
 
 ## Getting Started
 
-For the dependency management purpose, MAVEN is used.
-After the project has been cloned, in the project directory
-"mvn test" and "mvn package" commands can be called.
+For the dependency management purpose, MAVEN is used. <br/>
+After the project has been cloned, in the project directory <br/>
+"mvn test" and "mvn package" commands can be called. <br/>
 
 ### Prerequisites
 
-Java 8
-MAVEN
-This project uses port "7000" as default
+Java 8 <br/>
+MAVEN <br/>
+This project uses port "7000" as default <br/>
 please make sure that this port is not already in use.
 
 ### Dependencies
-javalin -> for rest api
-jackson -> json marshall, un-marshall
-testng  -> unit testing
-unirest -> unit testing
+javalin -> for rest api <br/>
+jackson -> json marshall, un-marshall <br/>
+testng  -> unit testing <br/>
+unirest -> unit testing <br/>
 
 ### Installing
 
-Run "mvn package"
-Under the target directory "MoneyTransferAPI-<version>.jar" will be created.
-This jar file contains all the necessary dependencies.
-It can be directly called via "java -jar <jar_name>"
+Run "mvn package"<br/>
+Under the target directory "MoneyTransferAPI-<version>.jar" will be created.<br/>
+This jar file contains all the necessary dependencies.<br/>
+It can be directly called via "java -jar <jar_name>"<br/>
 
 End with an example of getting some data out of the system or using it for a little demo
 
