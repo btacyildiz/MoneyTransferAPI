@@ -2,6 +2,7 @@ package data;
 
 import model.Account;
 import model.Currency;
+import model.InvalidTypeException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -13,7 +14,9 @@ public class  AccountDAOTest{
 
         final int TRY_COUNT = 50;
         final int THREAD_COUNT = 50;
-        Account a = new Account("1", Currency.GBP, 0);
+        Account a;
+             a = new Account("1", Currency.GBP, 0);
+
         AccountDAO.getInstance().addAccount(a);
 
         ArrayList<Thread> threads = new ArrayList<>();
@@ -36,11 +39,13 @@ public class  AccountDAOTest{
             }));
         }
 
+
         synchronized(this){
             for(int i=0; i<THREAD_COUNT; i++)
                 threads.get(i).start();
         }
 
         Assert.assertEquals(0.0, AccountDAO.getInstance().getAccount(a.getAccountID()).getBalance());
+
     }
 }

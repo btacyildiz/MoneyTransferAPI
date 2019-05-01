@@ -1,5 +1,6 @@
 package apicontroller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import data.AccountDAO;
 import io.javalin.Handler;
 import model.Account;
@@ -14,6 +15,9 @@ public class AccountController {
         // TODO check what if one of the elements of JSON is not provided
         Account newAccount;
         try {
+            ObjectMapper mapper = new ObjectMapper();
+            Account anotherAccount = mapper.readValue(ctx.body(), Account.class);
+
             newAccount = ctx.bodyAsClass(Account.class);
         }catch (Exception e){
             e.printStackTrace();

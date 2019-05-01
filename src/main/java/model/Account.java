@@ -1,5 +1,8 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import utility.JsonUtil;
 
@@ -9,8 +12,10 @@ public class Account extends JsonUtil {
 
     private Currency currency;
 
-    public Account(){}
-    public Account(String accountID, Currency type, double balance){
+    @JsonCreator
+    public Account(@JsonProperty(value = "accountID", required = true)String accountID,
+                   @JsonProperty(value = "currency", required = true)Currency type,
+                   @JsonProperty(value = "balance", required = true)double balance){
         this.accountID = accountID;
         this.balance = balance;
         this.currency = type;

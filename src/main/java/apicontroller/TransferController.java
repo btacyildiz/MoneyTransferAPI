@@ -16,12 +16,14 @@ public class TransferController {
             return;
         }
 
+        // TODO amount value floating digits should not be more than 2
         // Check if transfer amount is negative
         if(newTransfer.getAmount() < 0){
             ctx.result(ApiResult.NEGATIVE_BALANCE.toJSON());
             ctx.status(HTTPCodes.BAD_REQUEST.getCode());
             return;
         }
+        // TODO check if accounts are different
 
         // check if accounts are exists
         Account sourceAccount = AccountDAO.getInstance().getAccount(newTransfer.getSourceAccountID());
@@ -59,6 +61,8 @@ public class TransferController {
         // TODO check for concurrency
         // do the transfer
         double transferAmount = newTransfer.getAmount();
+
+        // TODO try to make following two op atomic
         sourceAccount.setBalance(sourceAccount.getBalance() - transferAmount);
         destinationAccount.setBalance(destinationAccount.getBalance() + transferAmount);
 

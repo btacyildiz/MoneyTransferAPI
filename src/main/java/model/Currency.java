@@ -1,6 +1,7 @@
 package model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 // TODO make currencies only string
@@ -13,7 +14,7 @@ public enum Currency {
         private int type;
 
     @JsonCreator
-    public static Currency getNameByValue(final int value) {
+    public static Currency getNameByValue(@JsonProperty(required = true)final int value) {
         for (final Currency s: Currency.values()) {
             if (s.getType()== value) {
                 return s;
