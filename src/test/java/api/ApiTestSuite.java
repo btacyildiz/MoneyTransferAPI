@@ -23,6 +23,7 @@ public class ApiTestSuite {
             app.disableStartupBanner();
             app.start(7000);
             new Router(app);
+            System.out.println("SERVER IS STARTED");
         }catch(Exception e){
             System.out.println("Already started");
         }

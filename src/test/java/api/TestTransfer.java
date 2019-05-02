@@ -207,17 +207,39 @@ public class TestTransfer extends ApiTestSuite {
         Assert.assertEquals(createAccount(TestConstants.ACCOUNT_ID_FOR_TRANFER_SOURCE).getStatus(), HTTPCodes.CREATED.getCode());
         Assert.assertEquals(createAccount(TestConstants.ACCOUNT_ID_FOR_TRANFER_DESTINATION).getStatus(), HTTPCodes.CREATED.getCode());
 
-        String transferCreateJson= "{\n" +
-                "\t\"sourceAccountID\" : \""+TestConstants.ACCOUNT_ID_FOR_TRANFER_SOURCE+"\",\n" +
-                "\t\"destinationAccountID\" : \""+TestConstants.ACCOUNT_ID_FOR_TRANFER_DESTINATION+"\",\n" +
-                "\t\"currency\" : 1001\n" +
-                "}";
+        String []jsonCases = {
+                 "{\n" +
+                        "\t\"sourceAccountID\" : \"" + TestConstants.ACCOUNT_ID_FOR_TRANFER_SOURCE + "\",\n" +
+                        "\t\"destinationAccountID\" : \"" + TestConstants.ACCOUNT_ID_FOR_TRANFER_DESTINATION + "\",\n" +
+                        "\t\"currency\" : 1001\n" +
+                        "}",
+                "{\n" +
+                        "\t\"destinationAccountID\" : \"" + TestConstants.ACCOUNT_ID_FOR_TRANFER_DESTINATION + "\",\n" +
+                        "\t\"amount\" : \"2\",\n" +
+                        "\t\"currency\" : 1001\n" +
+                        "}",
+                "{\n" +
+                        "\t\"sourceAccountID\" : \"" + TestConstants.ACCOUNT_ID_FOR_TRANFER_SOURCE + "\",\n" +
+                        "\t\"amount\" : \"2\",\n" +
 
-        HttpResponse<JsonNode> jsonResponse = Unirest.post( TestConstants.BASE_URL+ TestConstants.TRANSFER_PATH)
-                .header("accept", "application/json")
-                .body(transferCreateJson)
-                .asJson();
-        Assert.assertEquals(jsonResponse.getStatus(), HTTPCodes.BAD_REQUEST.getCode());
+                        "\t\"currency\" : 1001\n" +
+                        "}",
+                "{\n" +
+                        "\t\"sourceAccountID\" : \"" + TestConstants.ACCOUNT_ID_FOR_TRANFER_SOURCE + "\",\n" +
+                        "\t\"destinationAccountID\" : \"" + TestConstants.ACCOUNT_ID_FOR_TRANFER_DESTINATION + "\",\n" +
+                        "\t\"amount\" : \"2\",\n" +
+                        "}"
+        };
+
+        for(int i=0; i<jsonCases.length; i++) {
+            HttpResponse<JsonNode> jsonResponse = Unirest.post(TestConstants.BASE_URL + TestConstants.TRANSFER_PATH)
+                    .header("accept", "application/json")
+                    .body(jsonCases[i])
+                    .asJson();
+            Assert.assertEquals(jsonResponse.getStatus(), HTTPCodes.BAD_REQUEST.getCode());
+        }
+
+
 
         Assert.assertEquals(deleteAccount(TestConstants.ACCOUNT_ID_FOR_TRANFER_SOURCE).getStatus(), HTTPCodes.NO_CONTENT.getCode());
         Assert.assertEquals(deleteAccount(TestConstants.ACCOUNT_ID_FOR_TRANFER_DESTINATION).getStatus(), HTTPCodes.NO_CONTENT.getCode());
