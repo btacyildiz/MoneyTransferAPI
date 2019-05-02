@@ -1,12 +1,16 @@
 package api;
 
 import apicontroller.HTTPCodes;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import model.Account;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import java.io.IOException;
 
 public class TestTransfer extends ApiTestSuite {
     @Test
@@ -26,6 +30,43 @@ public class TestTransfer extends ApiTestSuite {
                 .body(transferCreateJson)
                 .asJson();
         Assert.assertEquals(jsonResponse.getStatus(), HTTPCodes.SUCCESS.getCode());
+
+        Assert.assertEquals(deleteAccount(TestConstants.ACCOUNT_ID_FOR_TRANFER_SOURCE).getStatus(), HTTPCodes.NO_CONTENT.getCode());
+        Assert.assertEquals(deleteAccount(TestConstants.ACCOUNT_ID_FOR_TRANFER_DESTINATION).getStatus(), HTTPCodes.NO_CONTENT.getCode());
+    }
+
+    @Test
+    public void transfer_BalancesAreSet() throws UnirestException, IOException {
+        Assert.assertEquals(createAccount(TestConstants.ACCOUNT_ID_FOR_TRANFER_SOURCE).getStatus(), HTTPCodes.CREATED.getCode());
+        Assert.assertEquals(createAccount(TestConstants.ACCOUNT_ID_FOR_TRANFER_DESTINATION).getStatus(), HTTPCodes.CREATED.getCode());
+
+        String transferCreateJson= "{\n" +
+                "\t\"sourceAccountID\" : \""+TestConstants.ACCOUNT_ID_FOR_TRANFER_SOURCE+"\",\n" +
+                "\t\"destinationAccountID\" : \""+TestConstants.ACCOUNT_ID_FOR_TRANFER_DESTINATION+"\",\n" +
+                "\t\"amount\" : \"2\",\n" +
+                "\t\"currency\" : 1001\n" +
+                "}";
+
+        HttpResponse<JsonNode> jsonResponse = Unirest.post( TestConstants.BASE_URL+ TestConstants.TRANSFER_PATH)
+                .header("accept", "application/json")
+                .body(transferCreateJson)
+                .asJson();
+        Assert.assertEquals(jsonResponse.getStatus(), HTTPCodes.SUCCESS.getCode());
+
+        HttpResponse<JsonNode> getSourceAccountResult = Unirest.get(TestConstants.BASE_URL+ TestConstants.ACCOUNT_PATH + "/" + TestConstants.ACCOUNT_ID_FOR_TRANFER_SOURCE)
+                .header("accept", "application/json")
+                .asJson();
+        HttpResponse<JsonNode> getDestinationAccountResult = Unirest.get(TestConstants.BASE_URL+ TestConstants.ACCOUNT_PATH + "/" + TestConstants.ACCOUNT_ID_FOR_TRANFER_DESTINATION)
+                .header("accept", "application/json")
+                .asJson();
+        Assert.assertEquals(jsonResponse.getStatus(), HTTPCodes.SUCCESS.getCode());
+        Assert.assertEquals(jsonResponse.getStatus(), HTTPCodes.SUCCESS.getCode());
+
+        Account source = getAccountFromJson(getSourceAccountResult.getBody().toString());
+        Account destination = getAccountFromJson(getDestinationAccountResult.getBody().toString());
+
+        Assert.assertEquals(198.0,source.getBalance());
+        Assert.assertEquals(202.0, destination.getBalance());
 
         Assert.assertEquals(deleteAccount(TestConstants.ACCOUNT_ID_FOR_TRANFER_SOURCE).getStatus(), HTTPCodes.NO_CONTENT.getCode());
         Assert.assertEquals(deleteAccount(TestConstants.ACCOUNT_ID_FOR_TRANFER_DESTINATION).getStatus(), HTTPCodes.NO_CONTENT.getCode());
@@ -268,4 +309,10 @@ public class TestTransfer extends ApiTestSuite {
                 "}";
 
     }
+
+    private Account getAccountFromJson(String json) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.readValue(json, Account.class);
+    }
+
 }
