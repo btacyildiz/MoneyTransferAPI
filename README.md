@@ -29,8 +29,6 @@ Under the target directory "MoneyTransferAPI-<version>.jar" will be created.<br/
 This jar file contains all the necessary dependencies.<br/>
 It can be directly called via "java -jar <jar_name>"<br/>
 
-End with an example of getting some data out of the system or using it for a little demo
-
 ## Running the tests
 
 Calling "mvn test" command will eventually execute all the test cases.
